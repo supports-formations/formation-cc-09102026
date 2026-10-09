@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
-import { GamePage } from './pages/GamePage'
-import { NicknamePage } from './pages/NicknamePage'
+import { GamePage } from './features/game/GamePage'
+import { NicknamePage } from './features/nickname/NicknamePage'
 
 function App() {
   return (

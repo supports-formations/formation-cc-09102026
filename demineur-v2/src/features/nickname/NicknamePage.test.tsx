@@ -2,9 +2,9 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
-import App from '../App'
-import { NICKNAME_KEY } from '../nickname/nicknameStorage'
-import { NICKNAME_ERROR } from '../nickname/validateNickname'
+import App from '../../App'
+import { NICKNAME_KEY } from './nicknameStorage'
+import { NICKNAME_ERROR } from './validateNickname'
 
 function renderApp() {
   render(

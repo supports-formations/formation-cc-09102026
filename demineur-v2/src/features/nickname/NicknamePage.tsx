@@ -4,8 +4,8 @@ import {
   clearNickname,
   loadNickname,
   saveNickname,
-} from '../nickname/nicknameStorage'
-import { validateNickname } from '../nickname/validateNickname'
+} from './nicknameStorage'
+import { validateNickname } from './validateNickname'
 
 export function NicknamePage() {
   const navigate = useNavigate()
