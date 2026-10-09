@@ -18,22 +18,22 @@ function renderApp() {
 const field = () => screen.getByLabelText('Pseudo')
 const submit = () => screen.getByRole('button', { name: 'Valider' })
 const guest = () => screen.getByRole('button', { name: 'Jouer en invité' })
-const onGamePage = () => screen.queryByRole('heading', { name: 'Jeu' })
+const onHomePage = () => screen.queryByRole('heading', { name: /^Bienvenue/ })
 
 describe('Page de pseudo', () => {
-  it('enregistre un pseudo valide et redirige vers le jeu', async () => {
+  it("enregistre un pseudo valide et redirige vers l'accueil", async () => {
     const user = renderApp()
     await user.type(field(), 'Evan')
     await user.click(submit())
     expect(localStorage.getItem(NICKNAME_KEY)).toBe('Evan')
-    expect(onGamePage()).toBeInTheDocument()
-    expect(screen.getByText('Joueur : Evan')).toBeInTheDocument()
+    expect(onHomePage()).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Bienvenue, Evan')
   })
 
   it('valide avec la touche Entrée', async () => {
     const user = renderApp()
     await user.type(field(), 'Evan{Enter}')
-    expect(onGamePage()).toBeInTheDocument()
+    expect(onHomePage()).toBeInTheDocument()
   })
 
   it.each(['ab', '   ', 'abcdefghijklmnopq', 'Evan!', 'Ev an', 'Évan'])(
@@ -45,7 +45,7 @@ describe('Page de pseudo', () => {
       expect(screen.getByRole('alert')).toHaveTextContent(NICKNAME_ERROR)
       expect(field()).toHaveAttribute('aria-invalid', 'true')
       expect(localStorage.getItem(NICKNAME_KEY)).toBeNull()
-      expect(onGamePage()).not.toBeInTheDocument()
+      expect(onHomePage()).not.toBeInTheDocument()
     },
   )
 
@@ -53,7 +53,7 @@ describe('Page de pseudo', () => {
     const user = renderApp()
     await user.click(submit())
     expect(screen.getByRole('alert')).toHaveTextContent(NICKNAME_ERROR)
-    expect(onGamePage()).not.toBeInTheDocument()
+    expect(onHomePage()).not.toBeInTheDocument()
   })
 
   it("supprime le message d'erreur dès que la saisie change", async () => {
@@ -76,8 +76,8 @@ describe('Page de pseudo', () => {
     const user = renderApp()
     await user.click(guest())
     expect(localStorage.getItem(NICKNAME_KEY)).toBeNull()
-    expect(onGamePage()).toBeInTheDocument()
-    expect(screen.getByText('Joueur : Invité')).toBeInTheDocument()
+    expect(onHomePage()).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Bienvenue, Invité')
   })
 
   it('pré-remplit le champ avec le pseudo mémorisé', () => {
@@ -93,7 +93,7 @@ describe('Page de pseudo', () => {
     await user.type(field(), 'Marie')
     await user.click(submit())
     expect(localStorage.getItem(NICKNAME_KEY)).toBe('Marie')
-    expect(onGamePage()).toBeInTheDocument()
+    expect(onHomePage()).toBeInTheDocument()
   })
 
   it('supprime le pseudo mémorisé en mode invité', async () => {
@@ -101,7 +101,7 @@ describe('Page de pseudo', () => {
     const user = renderApp()
     await user.click(guest())
     expect(localStorage.getItem(NICKNAME_KEY)).toBeNull()
-    expect(onGamePage()).toBeInTheDocument()
+    expect(onHomePage()).toBeInTheDocument()
   })
 
   it('ignore une valeur mémorisée corrompue', () => {

@@ -20,12 +20,12 @@ export function NicknamePage() {
       return
     }
     saveNickname(result.nickname)
-    navigate('/jeu')
+    navigate('/accueil')
   }
 
   function handleGuest() {
     clearNickname()
-    navigate('/jeu')
+    navigate('/accueil')
   }
 
   return (
